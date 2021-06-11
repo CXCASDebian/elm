@@ -1,16 +1,16 @@
 <template>
   <div class="tabbar">
-    <router-link
+    <router-link 
       class="tab-item"
       v-for="(item,index) in data"
       :key="index"
       :to="item.path"
       active-class="is-selected"
-    >
-      <div class="tab-item-icon">
-        <i :class="'fa fa-' + item.icon"></i>
-      </div>
-      <div class="tab-item-label">{{item.title}}</div>
+      >
+        <div class="tab-item-icon">
+          <i :class=" 'fa fa-' + item.icon"></i>
+          <div class="tab-item-label">{{item.title}}</div>
+        </div>
     </router-link>
   </div>
 </template>

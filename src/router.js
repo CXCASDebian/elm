@@ -8,9 +8,39 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: "/",
+      component: () => import("./views/Index.vue"),
+      children: [
+        {
+          path: '',
+          redirect: '/home'
+        },
+        {
+          path: '/home',
+          name: 'home',
+          component: () => import("./views/Home.vue")
+        }
+      ]
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("./views/Login.vue")
+    },
+    {
+      path: "/order",
+      name: "order",
+      component: () => import("./views/Order.vue")
+    },
+    {
+      path: "/me",
+      name: "me",
+      component: () => import("./views/Me.vue")
+    },
+    {
+      path: "/TheSlot",
+      name: "TheSlot",
+      component: () => import("./views/TheSlot.vue")
     }
   ]
 });
