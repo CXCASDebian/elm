@@ -17,6 +17,9 @@ export default {
         b:'hhh'
       }
     }
+  },
+  mounted () {
+    console.log('this parent',this.$parent);
   }
 }
 </script>

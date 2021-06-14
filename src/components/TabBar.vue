@@ -68,5 +68,6 @@ a {
 }
 .is-selected {
   color: #009eef;
+  height: calc(100%- 50px);
 }
 </style>
