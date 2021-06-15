@@ -2,11 +2,20 @@
   <div class="index">
     <router-view></router-view>
     <tabbar :data="tabbarData"/>
+    <TheSlot>
+      <template v-slot:world>
+        <div >hehe</div>
+      </template>
+      <template v-slot:scope1="property">
+        <h1>{{property.msg.a}}</h1>
+      </template>
+    </TheSlot>
   </div>
 </template>
 
 <script>
 import tabbar from '../components/TabBar.vue'
+import TheSlot from './TheSlot.vue'
 export default {
   name: 'index',
   data () {
@@ -19,7 +28,8 @@ export default {
     }
   },
   components: {
-    tabbar
+    tabbar,
+    TheSlot
   }
 }
 </script>

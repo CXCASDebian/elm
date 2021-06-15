@@ -3,6 +3,7 @@
     3中插槽
     <slot>这是默认值</slot>
     <slot name="hello"></slot>
+    <slot name="world" :msg="msg"></slot>
     <slot name="scope1" :msg="msg"></slot>
   </div>
 </template>
