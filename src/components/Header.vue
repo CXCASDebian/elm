@@ -3,6 +3,7 @@
     <!-- 左侧返回 -->
     <div class="header-button is-left" v-show="isLeft">
       <i class="fa fa-chevron-left"></i>
+      <!-- $router.go(-1)返回上一页 -->
       <button @click="$router.go(-1)">返回</button>
     </div>
     <!-- 中间标题 -->

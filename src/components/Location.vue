@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="loaction">
     <div class="title">当前定位</div>
     <div class="des" @click="$emit('click')">
       <i class="fa fa-location-arrow"></i>
@@ -18,6 +18,10 @@ export default {
 </script>
 
 <style scoped>
+.location {
+  margin-top: 200px;
+}
+
 .title {
   margin: 10px 0;
   font-size: 12px;

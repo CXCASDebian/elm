@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <div class="header">
+      <!-- $router.push() 加地址，也就是router.js里面的address -->
       <div class="address_map" @click="$router.push('/address')">
         <i class="fa fa-map-marker"></i>
         <span>收货地址</span>
