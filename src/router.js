@@ -41,6 +41,11 @@ const router = new Router({
       path: "/TheSlot",
       name: "TheSlot",
       component: () => import("./views/TheSlot.vue")
+    },
+    {
+      path: "/Address",
+      name: "Address",
+      component: () => import("./views/Address.vue")
     }
   ]
 });
