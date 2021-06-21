@@ -13,7 +13,7 @@
         <i class="fa fa-search"></i>
         <input type="text" v-bind:value="sugar" v-on:input="sugar=$event.target.value">
       </div>
-      <div>{{sugar}}</div>
+      <div>{{sugar + 1}}</div>
     </div>
     <Location/>
   </div>
