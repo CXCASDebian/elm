@@ -8,14 +8,13 @@
           <i class="fa fa-angle-down"></i>
         </span>
         <i class="fa fa-search"></i>
-        <input type="text" v-model="search_val">
+        <input type="text" v-model="search_val"
+         placeholder="小区/写字楼/学校等"
+        >
         {{search_val}}
         <i class="fa fa-search"></i>
-        <input type="text" v-bind:value="sugar" v-on:input="sugar=$event.target.value">
       </div>
-      <div>{{sugar + 1}}</div>
     </div>
-    <Location/>
   </div>
 </template>
 
@@ -31,12 +30,69 @@ export default {
       sugar: 1,
       search_val: "" // 搜索城市
     };
+  },
+  methods: {
+    test() {
+      alert(1)
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log('to',to)
+    next (vm => {
+      console.log(to.params.city);
+      vm.city = to.params.city;
+    });
   }
 }
 </script>
 
-<style scopde>
-  .address {
-    margin-top: 50px;
-  }
+<style scoped>
+.address {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-top: 50px;
+}
+
+.city_search {
+  background-color: #fff;
+  padding: 10px 20px;
+  color: #333;
+}
+
+.search {
+  background-color: #eee;
+  height: 40px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  line-height: 40px;
+}
+.search .city {
+  padding: 0 10px;
+}
+.city i {
+  margin-right: 10px;
+}
+.search input {
+  margin-left: 5px;
+  background-color: #eee;
+  outline: none;
+  border: none;
+}
+
+.area {
+  margin-top: 16px;
+  background: #fff;
+}
+.area li {
+  border-bottom: 1px solid #eee;
+  padding: 8px 16px;
+  color: #aaa;
+}
+.area li h4 {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
 </style>

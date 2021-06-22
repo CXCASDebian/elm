@@ -2,7 +2,7 @@
   <div class="home">
     <div class="header">
       <!-- $router.push() 加地址，也就是router.js里面的address -->
-      <div class="address_map" @click="$router.push('/address')">
+      <div class="address_map" @click="$router.push({name: 'Address', params: {city: city}})">
         <i class="fa fa-map-marker"></i>
         <span>收货地址</span>
         <i class="fa fa-sort-desc"></i>
@@ -26,7 +26,17 @@ export default {
     console.log('this',this);
     console.log('this.$parent',this.$parent);
     console.log('this.$children',this.$children);
-    console.log('child',this.$children[$refs]);
+    //console.log('child',this.$children[$refs]);
+    console.log(address);
+  },
+  computed: {
+    address () {
+      return this.$store.getters.address;
+    },
+    city () {
+      return
+        this.$store.getters.location.addressComponent.city || this.$store.getters.location.addressComponent.province
+    }
   }
 }
 </script>
