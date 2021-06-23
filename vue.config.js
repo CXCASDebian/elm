@@ -16,7 +16,6 @@ module.exports = {
         }
       }
     },
-    before: app => { },
-    https: true
+    before: app => { }
   }
 };

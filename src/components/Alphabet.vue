@@ -1,40 +1,31 @@
 <template>
-  <div class="area" ref="area_scroll" v-if="cityInfo">
+  <div class="alphabet">
     <div class="scroll_wrap">
       <!-- 热门城市 -->
-      <div class="hot_wrap citylist">
+      <div class="hot_wrap">
         <div class="title">热门城市</div>
         <ul class="hot_city">
-          <li
-            @click="$emit('selectCity',item)"
+          <li 
             v-for="(item,index) in cityInfo.hotCities"
-            :key="index"
-          >{{item.name}}</li>
+            :key="index">{{item.name}}</li>
         </ul>
       </div>
       <!-- 所有城市 -->
       <div class="city_wrap">
         <!-- 循环按字母排序的key -->
-        <div class="city_content citylist" v-for="(item,index) in keys" :key="index">
-          <div class="title">{{item}}</div>
-          <!-- 根据字母key展示城市名 -->
-          <ul>
-            <li
-              @click="$emit('selectCity',city)"
-              v-for="(city,index) in cityInfo[item]"
-              :key="index"
-            >{{city.name}}</li>
-          </ul>
+        <div class="city_content" v-for="(item,index) in keys"
+        :key="index">
+            <div class="title">{{item}}</div>
+            <!-- 根据字母展示对应的城市名 -->
+            <ul>
+              <li v-for="(city,index) in cityInfo[item]"
+              :key="index">{{city.name}}</li>
+            </ul>
         </div>
       </div>
     </div>
-    <div class="area_keys">
-      <ul>
-        <li @click="selectKey(0)">#</li>
-        <li @click="selectKey(index+1)" v-for="(item,index) in keys" :key="index">{{item}}</li>
-      </ul>
-    </div>
   </div>
+
 </template>
 
 <script>
@@ -47,7 +38,7 @@ export default {
     };
   },
   props: {
-    cityInfo: Object,
+    cityInfo : Object,
     keys: Array
   },
   methods: {

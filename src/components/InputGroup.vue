@@ -1,22 +1,21 @@
 <template>
   <div class="text_group">
     <!-- 组件结构 -->
-
     <!-- 组件容器 -->
-    <div class="input_group" :class="{ 'is-invalid':error }">
+    <div class="input_group" :class="{'is-invalid':error}">
       <!-- 输入框 -->
-      <input :type="type"
-      :value="value"
-      :placeholder="placeholder"
-      :name="name"
-      @input="$emit('input', $event.target.value)"
+      <input
+        :type="type"
+        :value="value"
+        :placeholder="placeholder"
+        :name="name"
+        @input="$emit('input',$event.target.value)"
       >
       <!-- 输入框后面的按钮 -->
-      <button v-if="btnTitle" :disabled="disabled" @click="$emit('btnClick')"
-      >{{btnTitle}} </button>
+      <button v-if="btnTitle" :disabled="disabled" @click="$emit('btnClick')">{{btnTitle}}</button>
     </div>
-     <!-- 错误提醒 -->
-      <div v-if="error" class="invalid-feedback">{{error}}</div>
+    <!-- 错误提醒 -->
+    <div v-if="error" class="invalid-feedback">{{error}}</div>
   </div>
 </template>
 
@@ -51,7 +50,6 @@ export default {
   height: 100%;
   width: 60%;
   outline: none;
-  border: 0px
 }
 .input_group button {
   border: none;

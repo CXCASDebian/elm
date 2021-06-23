@@ -9,16 +9,37 @@ const router = new Router({
   routes: [
     {
       path: "/",
-      component: () => import("./views/Index.vue"),
+      // name: 'index',
+      component: () => import("./views/index.vue"),
       children: [
         {
-          path: '',
-          redirect: '/home'
+          path: "",
+          redirect: "/home"
         },
         {
-          path: '/home',
-          name: 'home',
+          path: "/home",
+          name: "home",
           component: () => import("./views/Home.vue")
+        },
+        {
+          path: "/order",
+          name: "order",
+          component: () => import("./views/Order.vue")
+        },
+        {
+          path: "/me",
+          name: "me",
+          component: () => import("./views/Me.vue")
+        },
+        {
+          path: "/address",
+          name: "address",
+          component: () => import("./views/Address.vue")
+        },
+        {
+          path: "/city",
+          name: "city",
+          component: () => import("./views/City.vue")
         }
       ]
     },
@@ -26,26 +47,6 @@ const router = new Router({
       path: "/login",
       name: "login",
       component: () => import("./views/Login.vue")
-    },
-    {
-      path: "/order",
-      name: "order",
-      component: () => import("./views/Order.vue")
-    },
-    {
-      path: "/me",
-      name: "me",
-      component: () => import("./views/Me.vue")
-    },
-    {
-      path: "/TheSlot",
-      name: "TheSlot",
-      component: () => import("./views/TheSlot.vue")
-    },
-    {
-      path: "/Address",
-      name: "Address",
-      component: () => import("./views/Address.vue")
     }
   ]
 });

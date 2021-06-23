@@ -1,15 +1,12 @@
 <template>
-  <div>
-    me
-  </div>
+  <div class="me">我的</div>
 </template>
 
 <script>
 export default {
-  name: 'me'
-}
+  name: "me"
+};
 </script>
 
 <style>
-  
 </style>

@@ -1,42 +1,32 @@
 <template>
   <div class="index">
     <router-view></router-view>
-    <tabbar :data="tabbarData"/>
-    <TheSlot>
-      <template v-slot:world>
-        <div >hehe</div>
-      </template>
-      <template v-slot:scope1="property">
-        <h1>{{property.msg.a}}</h1>
-      </template>
-    </TheSlot>
+    <TabBar :data="tabbarData"/>
   </div>
 </template>
 
 <script>
-import tabbar from '../components/TabBar.vue'
-import TheSlot from './TheSlot.vue'
+import TabBar from "../components/TabBar";
 export default {
-  name: 'index',
-  data () {
+  name: "index",
+  data() {
     return {
       tabbarData: [
-        {title: '首页',icon:"home",path:"/home"},
-        {title: '订单',icon:"file-text-o",path:"/order"},
-        {title: '我都',icon:"user",path:"/me"},
+        { title: "首页", icon: "home", path: "/home" },
+        { title: "订单", icon: "file-text-o", path: "/order" },
+        { title: "我的", icon: "user", path: "/me" }
       ]
-    }
+    };
   },
   components: {
-    tabbar,
-    TheSlot
+    TabBar
   }
-}
+};
 </script>
 
 <style scoped>
-  .index {
-    width: '100%';
-    height: calc(100% - 45px );
-  }
+.index {
+  width: 100%;
+  height: calc(100% - 45px);
+}
 </style>
