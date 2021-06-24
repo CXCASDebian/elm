@@ -5,14 +5,25 @@
         <i class="fa fa-search"></i>
         <input v-model="city_val" type="text" placeholder="输入城市名">
       </div>
-      <button @click="$router.go(-1)">取消</button>
+      <button @click="$router.push({name:'address', params:{city: city}})">取消</button>
     </div>
-    <div style="height: 100%">
+    <div style="height: 100%" v-if="!searchList.length">
       <div class="location">
-        <Location :address="city"/>
+        <Location @click="selectCity(city)" :address="cityName" />
       </div>
-      <Alphabet ref="allcity" :cityInfo="cityInfo" :keys="keys"/>
+      <Alphabet ref="allcity" :cityInfo="cityInfo" :keys="keys" @changeLocation="locationGetter" @selectCity="selectCity"/>
     </div>
+    <div class="search_list" v-else>
+        <ul>
+          <li
+            v-for="(item,index) in searchList"
+            :key="index"
+            @click="selectCity"
+          >
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
   </div>
 </template>
 
@@ -25,19 +36,39 @@ export default {
    return {
      city_val : '',
      cityInfo: null,
-     keys: []
+     keys: [],
+     cityName: '武汉',
+     allCities: [],
+     searchList: []
    }
   },
   created() {
     this.getCityInfo();
   },
   computed: {
-    city () {
-      return '武汉' 
+    city: {
+      get(){
+          return '武汉' 
+      },
+      set(v) {
+        return v
+      }
       // return (
       //   this.$store.getters.location.addressComponent.city ||
       //   this.$store.getters.location.addressComponent.province
       // );
+    }
+  },
+  watch: {
+    city_val () {
+      // 以下6行为自制 searchCity
+      // this.allCities.forEach(item => {
+      //   if(item.indexOf(this.city_val) == 0){
+      //     this.searchList.push(item);
+      //   }
+      // })
+      // console.log(this.searchList,'test');
+      this.searchCity()
     }
   },
   methods: {
@@ -45,17 +76,43 @@ export default {
       console.log(1);
       this.$axios("/api/posts/cities").then((res) => {
         this.cityInfo = res.data;
-        console.log(this.cityInfo);
         this.keys= Object.keys(res.data);
         this.keys.pop();
         this.keys.sort();
         this.$nextTick(() => {
           this.$refs.allcity.initScroll();
         });
+        // 存储所有城市拥于搜索过滤
+        this.keys.forEach( key => {
+          //console.log(this.cityInfo[key]);
+          this.cityInfo[key].forEach(item => {
+            //console.log(item.name);
+            this.allCities.push(item)
+          })
+        })
+        // console.log(this.allCities);
       })
       .catch(err => {
         console.log(err);
       })
+    },
+    locationGetter (cityName) {
+      this.cityName = cityName
+      console.log(this.cityName);
+    },
+    selectCity (city) {
+      console.log(city.name);
+      this.$router.push({name:'address', params: { city: city}})
+    },
+    searchCity () {
+      if(!this.city_val){
+        this.searchList = [];
+      }else {
+        this.searchList = this.allCities.filter(item => {
+          return (item.name.indexOf(this.city_val) !== -1);
+        })
+        console.log(this.searchList);
+      }
     }
   },
   components: {

@@ -7,7 +7,9 @@
         <ul class="hot_city">
           <li 
             v-for="(item,index) in cityInfo.hotCities"
-            :key="index">{{item.name}}</li>
+            :key="index"
+            @click="$emit('selectCity', item)"
+            >{{item.name}}</li>
         </ul>
       </div>
       <!-- 所有城市 -->
@@ -19,11 +21,14 @@
             <!-- 根据字母展示对应的城市名 -->
             <ul>
               <li v-for="(city,index) in cityInfo[item]"
-              :key="index">{{city.name}}</li>
+              :key="index" 
+              @click="$emit('selectCity', city)"
+              >{{city.name}} </li>
             </ul>
         </div>
       </div>
     </div>
+    <!-- 以下为右边的字母表 -->
     <div class="area_keys">
       <ul>
         <li
@@ -61,6 +66,11 @@ export default {
     showValue (item) {
       console.log(item);
       console.log(this.$refs[item])
+    },
+    // test是3.9课自己尝试的 点击城市并传值
+    test (cityName) {
+      // 把获得的城市地址传给City
+      this.$emit('changeLocation', cityName);
     },
     selectKey(index) {
       const citylist = this.$refs.area_scroll.getElementsByClassName(
