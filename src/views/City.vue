@@ -7,11 +7,11 @@
       </div>
       <button @click="$router.go(-1)">取消</button>
     </div>
-    <div>
+    <div style="height: 100%">
       <div class="location">
         <Location :address="city"/>
       </div>
-      <Alphabet :cityInfo="cityInfo" :keys="keys"/>
+      <Alphabet ref="allcity" :cityInfo="cityInfo" :keys="keys"/>
     </div>
   </div>
 </template>
@@ -49,6 +49,9 @@ export default {
         this.keys= Object.keys(res.data);
         this.keys.pop();
         this.keys.sort();
+        this.$nextTick(() => {
+          this.$refs.allcity.initScroll();
+        });
       })
       .catch(err => {
         console.log(err);

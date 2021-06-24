@@ -1,8 +1,8 @@
 <template>
-  <div class="alphabet">
+  <div class="area" ref="area_scroll" v-if="cityInfo">
     <div class="scroll_wrap">
       <!-- 热门城市 -->
-      <div class="hot_wrap">
+      <div class="hot_wrap citylist">
         <div class="title">热门城市</div>
         <ul class="hot_city">
           <li 
@@ -13,7 +13,7 @@
       <!-- 所有城市 -->
       <div class="city_wrap">
         <!-- 循环按字母排序的key -->
-        <div class="city_content" v-for="(item,index) in keys"
+        <div class="city_content citylist" v-for="(item,index) in keys"
         :key="index">
             <div class="title">{{item}}</div>
             <!-- 根据字母展示对应的城市名 -->
@@ -24,8 +24,19 @@
         </div>
       </div>
     </div>
+    <div class="area_keys">
+      <ul>
+        <li
+          @click="selectKey(0)">#</li>
+        <li
+          v-for="(item,index) in keys" 
+         :key="index"
+         :ref="item"
+         @click="selectKey(index + 1)"
+         >{{item}}</li>
+      </ul>
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -35,27 +46,28 @@ export default {
   data() {
     return {
       scroll: null
-    };
+    }
   },
   props: {
     cityInfo : Object,
     keys: Array
   },
   methods: {
-    initScroll() {
-      this.scroll = new BScroll(this.$refs.area_scroll, {
+    initScroll (){
+      this.scroll = new BScroll(this.$refs.area_scroll,{
         click: true
-      });
+      })
+    },
+    showValue (item) {
+      console.log(item);
+      console.log(this.$refs[item])
     },
     selectKey(index) {
-      // console.log(index);
-      // console.log(this.$refs.area_scroll.getElementsByClassName("citylist"));
       const citylist = this.$refs.area_scroll.getElementsByClassName(
         "citylist"
       );
       // 根据下标,滚动到相对应的元素上
       let el = citylist[index];
-
       // 滚动到对应的位置上
       this.scroll.scrollToElement(el, 250);
     }
