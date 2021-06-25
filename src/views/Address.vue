@@ -4,7 +4,7 @@
     <div class="city_search">
       <div class="search">
         <span class="city" @click="$router.push('/city')">
-          {{city}}
+          {{city.name}}
           <i class="fa fa-angle-down"></i>
         </span>
         <i class="fa fa-search"></i>
