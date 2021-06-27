@@ -54,6 +54,10 @@ export default {
           this.$emit("update", {condition: this.filterData.navTab[2].condition});
           this.hideView();
           break;
+        case 3:
+          this.$emit("update", {condition: this.filterData.navTab[2].condition});
+          this.hideView();
+          break;
         default:
           break;
       }
