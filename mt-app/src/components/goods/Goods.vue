@@ -6,7 +6,8 @@
         <!-- 专场 -->
         <li
           class="menu-item"
-          
+          :class="{ 'current':currentIndex ===0}"
+          @click="selectMenu(0)"
         >
           <p class="text">
             <img :src="container.tag_icon" v-if="container.tag_icon">
@@ -16,14 +17,18 @@
 
         <li
           class="menu-item"
-          
+          :class="{ 'current':currentIndex === index +1}"
           v-for="(item,index) in goods"
           :key="index"
+          @click="selectMenu(index +1)"
         >
           <p class="text">
             <img :src="item.icon" v-if="item.icon">
             {{item.name}}
           </p>
+          <i class="num" v-show="calculateCount(item.spus)">
+            {{calculateCount(item.spus)}}
+          </i>
         </li>
       </ul>
     </div>
@@ -33,7 +38,7 @@
     <div class="foods-wrapper" ref="foodScroll">
       <ul>
         <!-- 专场 开始 -->
-        <li class="container-list">
+        <li class="container-list food-list-hook">
           <div v-for="(item,index) in container.operation_source_list" :key="index">
             <img :src="item.pic_url" alt="">
           </div>
@@ -41,12 +46,13 @@
         <!-- 专场 结束 -->
 
         <!-- 具体分类 开始 -->
-        <li v-for="(item,index) in goods" :key="index" class="food-list">
+        <li v-for="(item,index) in goods" :key="index" class="food-list food-list-hook">
           <h3 class="title">{{item.name}}</h3>
 
           <!-- 具体商品 开始 -->
           <ul>
             <li
+             @click="showDetail(food)"
               class="food-item"
               v-for="(food,index) in item.spus" :key="index">
               <!-- 因为计算属性不能接受参数，所以head_bg应当为methods -->
@@ -65,6 +71,9 @@
                   <span class="unit">{{food.unit}}</span>
                 </p>
               </div>
+              <div class="cartcontrol-wrapper">
+                <app-cart-control :food="food"></app-cart-control>
+              </div>
             </li>
           </ul>
           <!-- 具体商品 结束 -->
@@ -73,25 +82,38 @@
       </ul>
     </div>
     <!-- 商品列表 结束 -->
+
+    <!-- 购物车 -->
+    <app-shopcart :poiInfo="poiInfo" :selectFoods = "selectFoods"></app-shopcart>
+
+    <!-- 商品详情 -->
+    <app-product-detail :selectFood="food" ref="foodView"></app-product-detail>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+import Shopcart from '../shopcart/Shopcart.vue'
+import CartControl from '../cartcontrol/CartControl.vue'
+import productDetail from '../productDetail/productDetail.vue'
 export default {
   data(){
     return {
       container: {},
       goods: [],
       menuScroll:{},
-      foodScroll:{}
+      poiInfo: {},
+      foodScroll:{},
+      listHeight: [],
+      scrollY: 0,
+      selectFood: {}
     }
   },
   methods:{
     head_bg (imgName){
       return "background-image: url(" + imgName + ");"
     },
-    initScroll(){
+    initScroll () {
       this.menuScroll = new BScroll(this.$refs.menuScroll,{
         click:true
       })
@@ -101,36 +123,106 @@ export default {
       })
 
       // foodScroll 监听事件
-      this.foodScroll.on("scroll",(pos) => {
-        // console.log(pos.y)
+      this.foodScroll.on("scroll", (pos) => {
         this.scrollY = Math.abs(Math.round(pos.y))
-        // console.log(this.scrollY)
+        //console.log(this.scrollY);
       })
+    },
+    calculateHeight () {
+      // 获取元素
+      let foodlist = this.$refs.foodScroll.getElementsByClassName("food-list-hook")
+      // console.log(foodlist)
+
+      let height = 0
+      this.listHeight.push(height)
+
+      for(let i = 0; i < foodlist.length; i++){
+        let item = foodlist[i]
+        // 累加
+        height += item.clientHeight
+        this.listHeight.push(height)
+      }
+       //console.log(this.listHeight)
+    },
+    selectMenu(index){
+      console.log(index)
+      console.log(this.$refs.foodScroll.getElementsByClassName('food-list-hook'))
+      let elements = this.$refs.foodScroll.getElementsByClassName('food-list-hook')
+      console.log(elements[index]);
+      this.foodScroll.scrollToElement(elements[index], 250)
+    },
+    calculateCount(spus){
+      let count = 0
+      spus.forEach((food) => {
+        if(food.count > 0){
+          count += food.count
+        }
+      })
+      return count
+    },
+    showDetail(food){
+      this.selectFood = food
+
+      this.$refs.foodView.showView()
     }
   },
-  created() {
+  created(){
     fetch("/api/goods")
       .then(res => {
         return res.json()
       })
-      .then(res => {
-        if(res.code === 0) {
-          this.container = res.data.container_operation_source
-          this.goods = res.data.food_spu_tags
-          this.poiInfo = res.data.poi_info
+      .then(response =>{
+        if(response.code == 0){
+          this.container = response.data.container_operation_source
+          this.goods = response.data.food_spu_tags
+          this.poiInfo = response.data.poi_info
+
           // DOM已经更新
           this.$nextTick(() => {
             // 执行滚动方法
             this.initScroll()
 
             // 计算分类的区间高度
-            //this.calculateHeight()
+            this.calculateHeight()
             // 监听滚动的位置
             // 根据滚动位置确认下标,与左侧对应
             // 通过下标实现点击左侧,滚动右侧
           })
         }
       })
+  },
+  components: {
+    "app-shopcart": Shopcart,
+    "app-cart-control": CartControl,
+    "app-product-detail": productDetail
+  },
+  computed: {
+    currentIndex () {
+      for(let i = 0; i< this.listHeight.length; i++){
+        // 商品区间的范围
+        let height1 = this.listHeight[i]
+        let height2 = this.listHeight[i+1]
+
+        // 是否在区间上
+        if ( !height2 || (this.scrollY > height1 && this.scrollY < height2) ) {
+          console.log(i);
+          return i
+        }
+      }
+      return 0
+    },
+    selectFoods () {
+      let foods = [];
+      this.goods.forEach( (myfood)=> {
+        myfood.spus.forEach( (food) => {
+          if (food.count > 0) {
+            foods.push(food)
+          }
+        })
+      })
+      console.log(foods);
+      return foods
+    }
   }
 }
 </script>
