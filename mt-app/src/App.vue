@@ -3,7 +3,7 @@
     <!-- header -->
     <app-header :poiInfo="poiInfo"></app-header>
     <!-- navigation -->
-    <app-nav></app-nav>
+    <app-nav :commentNum="commentNum"></app-nav>
     <!-- content -->
     <router-view></router-view>
   </div>
@@ -17,7 +17,8 @@ export default {
   name: 'App',
   data(){
     return{
-      poiInfo:{}
+      poiInfo:{},
+      commentNum: 0
     }
   },
   components: {
@@ -32,12 +33,23 @@ export default {
       .then(res => {
         return res.json()
       })
-      .then(response =>{
-        // console.log(response)
-        if(response.code == 0){
-          // console.log(response.data)
-          this.poiInfo = response.data.poi_info
+      .then(res =>{
+        // console.log(res)
+        if(res.code == 0){
+          // console.log(res.data)
+          this.poiInfo = res.data.poi_info
           // console.log(this.poiInfo)
+        }
+      })
+
+    // 获取rating的数据
+    fetch("/api/ratings")
+      .then(res => {
+        return res.json()
+      })
+      .then(res => {
+        if (res.code == 0){
+          this.commentNum = res.data.comment_num
         }
       })
   }

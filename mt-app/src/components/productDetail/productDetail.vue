@@ -1,32 +1,81 @@
 <template>
   <transition name="food-detail">
-    <div class="food" v-show="showFlag">
+    <div class="food" v-show="showFlag" ref="foodView">
       <div class="food-wrapper">
         <div class="food-content">
           <div class="img-wrapper">
-            <img src="" alt="" class="food-img">
+            <img :src="food.picture" alt="" class="food-img">
             <span
               @click="closeView()"
               class="close-bt icon-close"></span>
             <img src="./img/share.png" class="share-bt">
             <img src="./img/more.png" class="more-bt">
           </div>
+          <div class="content-wrapper">
+            <h3 class="name">{{food.name}}</h3>
+            <p class="saled">{{food.month_saled_content}}</p>
+            <img src="" alt="" class="product" v-show="food.product_label_picture" :src="food.product_label_picture"/>
+            <p class="price">
+              <span class="text">${{food.min_price}}</span>
+              <span class="unit">/{{food.unit}}</span>
+            </p>
+            <div class="cartcontrol-wrapper">
+              <CartControl :food="food"></CartControl>
+            </div>
+            <div
+              class="buy"
+              v-show="!food.count || food.count == 0"
+              @click="addProduct"
+            >
+              选规格
+            </div>
         </div>
-        <div class="content-wrapper">
-          <h3 class="name"></h3>
-          <p class="saled"></p>
-          <img src="" alt="" class="product">
-          <p class="price">
-            <span class="text"></span>
-            <span class="unit"></span>
-          </p>
-          <div class="cartcontrol-wrapper">
-            <CartControl :food="food"></CartControl>
-          </div>
-          <div class="buy">
-            选规格
-          </div>
         </div>
+				<Split></Split>
+
+				<!-- 外卖评价 开始 -->
+				<div class="rating-wrapper">
+					<!-- 评价头部 -->
+					<div class="rating-title">
+						<div class="like-ratio" v-if="food.rating">
+							<span class="title">{{food.rating.title}}</span>
+							<span class="ratio">
+								(
+									{{food.rating.like_ratio_desc}}
+									<i>{{food.rating.like_ratio}}</i>
+								)
+							</span>
+						</div>
+						<div class="snd-title" v-if="food.rating">
+								<span class="text">{{food.rating.snd_title}}</span>
+								<span class="icon icon-keyboard_arrow_right"></span>
+						</div>
+						<ul class="rating-content" v-if="food.rating">
+							<li
+								v-for="(comment,index) in food.rating.comment_list"
+								:key="index"
+								class="comment-item"
+							>
+								 <div class="comment-header">
+										<img :src="comment.user_icon" v-if="comment.user_icon" />
+										<img src="./img/anonymity.png" v-if="!comment.user_icon"  />
+									</div>
+									<div class="comment-main">
+										<div class="user">
+											{{comment.user_name}}
+										</div>
+										<div class="time">
+											{{comment.comment_time}}
+										</div>
+										<div class="content">
+											{{comment.comment_content}}
+										</div>
+									</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- 外卖评价 结束 -->
       </div>
     </div>
   </transition>
@@ -34,7 +83,10 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import BScroll from 'better-scroll'
 import CartControl from '../cartcontrol/CartControl.vue'
+import Split from '../split/Split.vue'
 export default {
   props: {
     food: {
@@ -49,13 +101,27 @@ export default {
   methods: {
     showView () {
       this.showFlag = true
+
+			this.$nextTick(() => {
+				if(!this.scroll){
+					this.scroll = new BScroll(this.$refs.foodView,{
+						click: true
+					})
+				}else{
+					this.scroll.refresh()
+				}
+			})
     },
     closeView () {
       this.showFlag = false
+    },
+    addProduct () {
+      Vue.set(this.food, "count", 1)
     }
   },
   components: {
-    CartControl
+    CartControl,
+		Split
   }
 }
 </script>

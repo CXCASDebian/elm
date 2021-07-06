@@ -87,7 +87,7 @@
     <app-shopcart :poiInfo="poiInfo" :selectFoods = "selectFoods"></app-shopcart>
 
     <!-- 商品详情 -->
-    <app-product-detail :selectFood="food" ref="foodView"></app-product-detail>
+    <app-product-detail :food="selectFood" ref="foodView"></app-product-detail>
   </div>
 </template>
 
