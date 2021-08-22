@@ -145,7 +145,6 @@ export default {
        //console.log(this.listHeight)
     },
     selectMenu(index){
-      console.log(index)
       console.log(this.$refs.foodScroll.getElementsByClassName('food-list-hook'))
       let elements = this.$refs.foodScroll.getElementsByClassName('food-list-hook')
       console.log(elements[index]);

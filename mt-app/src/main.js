@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 import Goods from '@/components/goods/Goods';
 import Ratings from '@/components/ratings/Ratings';
 import Seller from '@/components/seller/Seller';
+import Computed from '@/components/computed/computed.vue';
 
 Vue.config.productionTip = false
 
@@ -15,7 +16,8 @@ const routes = [
   {path:"/",redirect:"/goods"},
   {path:"/goods",component:Goods},
   {path:"/ratings",component:Ratings},
-  {path:"/seller",component:Seller}
+  {path:"/seller",component:Seller},
+  {path:"/computed",component:Computed}
 ]
 
 // 实例化router

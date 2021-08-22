@@ -98,7 +98,7 @@ import CartControl from '../cartcontrol/CartControl.vue'
 export default {
 	data () {
 		return {
-			fold: true
+			fold: false
 		}
 	},
   props: {
@@ -131,23 +131,16 @@ export default {
 			})
 		},
 		hideMask () {
-			this.fold = true
+			
 		}
 	},
 	computed: {
 		totalCount () {
-			let num = 0;
-			this.selectFoods.forEach((food) => {
-				num += food.count
-			})
-			return num
+			
+			
 		},
 		totalPrice () {
-			let total = 0;
-			this.selectFoods.forEach((food) => {
-				total += food.min_price * food.count
-			})
-			return total
+			
 		},
 		payStr () {
 			if(this.totalCount > 0){
